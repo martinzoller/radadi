@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html><head>
+<!-- This file is meant to be copied to the client PC and opened at startup.
+     This way, if there is no network connection, the client will keep 
+     trying to connect, rather than requiring keyboard interaction
+     immediately. -->
+<meta charset="UTF-8"> 
+<script src="js/jquery-2.2.3.min.js"></script>
+<script src="js/moment.min.js"></script>
+<script>
+var serverURL='http://192.168.1.5/radadi';
+var pingTimer=0;
+
+function pingServer()
+{
+
+  $.ajax(
+    {
+      type: 'GET',
+      url: serverURL+'/ping.php',
+      async: true, /* If set to non-async, browser shows page as "Loading.."*/
+      cache: false,      
+      timeout: 5000,
+      success: function(data){
+        if(data=='pong'){
+          window.location.href=serverURL;
+        } else {
+          pingTimer=setTimeout(pingServer, 3000);
+        }
+      },
+      error: function(xhr, status, error) {
+        $('#errors').prepend('<p>'+moment().format('hh:mm:ss')+' '+status+'</p>');
+        pingTimer=setTimeout(pingServer, 3000);
+      },
+    }
+  );
+}
+
+$(document).ready(function() {  
+  $('#serverURL').val(serverURL);
+  pingServer();
+  
+  $('#setServer').click(function() {
+    serverURL = $('#serverURL').val();
+    if(pingTimer){
+      clearTimeout(pingTimer);
+    }
+    pingServer();
+  });
+});
+
+</script>
+
+<title>radadi - Race Data Display</title>
+<style type="text/css" media="screen">
+
+body { font-family: sans-serif; background-color:#bbf; overflow: hidden }
+#errors { width: 50%; background-color:#f99; margin-top: 20px }
+#errors p { padding: 3px; margin: 0 }
+input { background-color:#eef; margin:2px }
+
+</style>
+</head>
+
+<body>
+<h1>Attempting to connect to server.</h1>
+<input id="serverURL" name="serverURL" type="text" size=50 /><input type="button" id="setServer" name="setServer" value="Connect" />
+<div id="errors"></div>
+</body></html>

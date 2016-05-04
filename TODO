@@ -1,0 +1,24 @@
+Priorities:
+- Add simple MySQL based config interface (for client config in particular)
+  * Keep a client list with last-seen timestamp and option to "clean it up"
+  * Choose classes from the ones present in current import files, as a list with "select all" / "select none"
+- Add support for IOF XML to read metadata about the event directly from the import file
+- Add support for mobile devices (on-site result wifi) 
+  * probably without auto-update for now
+  * single column with scrolling
+  * maybe select class from a dropdown list for easier navigation
+- Add support for speaker intermediate results (by control)
+  * display as extra columns like in OE?
+  * display results at one particular control
+
+
+Nice to have: Live update of the data being displayed (particularly for speaker results)
+
+* Compare the entire CSV to the previous version and identify lines that are identical (except for rank)
+* Mark new lines with colored background and maybe slide them in
+* If lines have been removed, stuff gets complicated - probably it's easier to reset the file completely in this case?
+* Ensure that the current page is displayed at least ~3 more secs if something has changed on it
+* Anchor the pagination to the first (unchanged) line of the current page, go through until the end,
+  then restart with new pagination
+* Optionally, keep track of when each line of the CSV appeared and color runners that have newly arrived within X minutes
+  even if they were already there when the page loaded.

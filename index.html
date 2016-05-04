@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html><head>
+<meta charset="UTF-8"> 
+<script src="js/jquery-2.2.3.min.js"></script>
+<script src="js/radadi.js"></script>
+
+<title>radadi - Race Data Display</title>
+<style type="text/css" media="screen">
+
+html,body { height:100%;border:0;padding:0;margin:0 } /* height:100% is actually required to set a div height to a percentage */
+body { font-family: sans-serif; background-color:#bbf; overflow:hidden; }
+span.coursedata { font-size:70%;font-style:italic;margin-left:2em; }
+
+/* START/RESULT LIST */
+#radaheader { height:20%;width:100%;overflow:hidden;margin:0.5em; /*background-color:orange;*/ }
+#radaspace { height:80%;width:100%;overflow:hidden; /*background-color:green;*/ }
+.radacol { position:absolute;top:20%;box-sizing:border-box;padding:1em; /*background-color:blue;*/ }
+.radapage { height:100%;width:100%; /*background-color:red;*/ }
+table.radalist { background-color:#fff;border-collapse:collapse;table-layout:fixed;width:100%; }
+table.radalist tr.even { background: #ddd; }
+table.radalist tr.odd { background: #fff; }
+table.radalist td { padding:0.2em 0.5em;overflow:hidden;white-space: nowrap; }
+td.col_stno { width:6%; }
+td.col_place { width:6%;text-align:right; }
+td.col_nat { width:5%; }
+td.col_name { width:37%; }
+/* td.col_yob { width:7%; } */
+td.col_club { width:34%; }
+td.col_time { width:18%; }
+h1 { margin:0.1em 0; font-variant:small-caps; }
+h2 { margin-top:0;margin-bottom:0.1em }
+.gap { margin-top:2em }
+.flag { position:relative;height:1em;width:1.5em;border:0.1em solid #ccc; }
+.flag img { height:1em;width:1.5em; }
+
+/* ERROR POPUP */
+div#errmsg { position:absolute;width:50%;left:25%;top:70%;border:solid 0.1em #e55;
+             background-color:#f99;color:#000;display:none; }
+a#errmsg_x { text-decoration:none;color:#000;font-weight:bold; }
+h3#errmsg_title { margin:0;padding:0.3em 0.3em 0 0.3em; }
+div#errmsg_text { padding:0.3em; }
+
+</style>
+</head>
+
+<body>
+<div id="radaheader"><h1 id="eventname"></h1><h1 id="subtitle"></h1></div>
+<div id="radaspace"></div>
+
+<!-- Error popup -->
+<div id="errmsg">
+    <div style="width:100%;position:relative">
+        <h3 id="errmsg_title">ttl</h3>
+        <div style="position:absolute;right:0.3em;top:0;">
+           <a id="errmsg_x" href="#" onClick="$('#errmsg').hide()">×</a>
+        </div>
+    </div>
+    <div id="errmsg_text">txt
+    </div>
+</div>
+<!-- /Error popup -->
+
+</body></html>

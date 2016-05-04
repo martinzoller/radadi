@@ -1,0 +1,9 @@
+Download on Wikipedia https://en.wikipedia.org/wiki/File:Flag_of_COUNTRY.svg
+Find links to these files by IOC code in https://en.wikipedia.org/wiki/Category:Country_flag_IOC_alias_templates
+(https://en.wikipedia.org/wiki/Template:Country_flag_IOC_alias_###)
+
+There also seems to be a tool here but probably not worth the effort:
+https://github.com/borgar/node-flags/blob/master/README.md
+
+
+MZO 2016-04-26

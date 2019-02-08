@@ -20,7 +20,7 @@ Support for mobile devices is planned for a future release.
 2. Clone the repository into the "htdocs" folder of the webserver (or simply download as ZIP and extract it there).
 3. Set the IP address of the PC to 192.168.1.5. If you use a different address, adapt `js/radadi.js` accordingly.
 4. Open `server.php` in a text editor to configure the list of classes that each client should display, and set the event name and current stage.
-5. Export a start list by classes from OE2010 into `startlist.csv`, and/or set up an automatic export of a preliminary result (by classes) into `resultlist.csv`, at a regular interval (1-2 minutes is recommended).
+5. Export a start list by classes from OE2010 into `startlist.csv`, and/or set up an automatic export of a preliminary result (by classes) into `resultlist.csv`, at a regular interval (1-2 minutes is recommended). Make sure to enable the "Excel time format" tick!
 6. Point client devices to `http://192.168.1.5/radadi` to display the list. They will automatically paginate the data and update it at the end of each display cycle.
 
 Hopefully there will soon be a GUI to configure client settings.

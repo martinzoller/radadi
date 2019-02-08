@@ -178,9 +178,11 @@ function updateList(){
     
     // For simplicity, use a complete table tag for each row, that way we can treat them independently
     listhtml += '<table class="radalist"><tr class="'+(evenrow?'even':'odd')+'">';
-    listhtml += stno_pl+'</td>';
-    listhtml += '<td class="col_nat"><div class="flag"><img src="img/nat/'+line['Nat']+'.svg" alt="'+line['Nat']+'" /></div></td>';
-    listhtml += '<td class="col_name">'+line['First name']+' '+line['Surname']+'</td>';
+    listhtml += stno_pl+'</td><td class="col_nat"><div class="flag">';
+	if(line['Nat']!='') {
+		listhtml += '<img src="img/nat/'+line['Nat']+'.svg" alt="'+line['Nat']+'" />';
+	}
+    listhtml += '</div></td><td class="col_name">'+line['First name']+' '+line['Surname']+'</td>';
     //listhtml += '<td class="col_yob">'+line['YB']+'</td>';
 	listhtml += '<td class="col_club">'+line['City']+'</td>';
     listhtml += '<td class="col_time">'+tstr+'</td></tr></table></div>';

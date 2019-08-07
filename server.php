@@ -52,20 +52,6 @@ if ($clientconfig["type"] == "startlist") {
 
 
 
-// Run this loop for up to 30 seconds
-for ($i=0;$i<30;$i++) {
-    $file_tstamp=filemtime($csvconfig['filename']);
-    if ($file_tstamp==0) {
-        $error_message='Invalid file timestamp, check path';
-        jsonerr();
-    }
-    if ($file_tstamp > $_GET['timestamp']) {
-        break;
-    }
-    sleep(1);
-}
-
-
 
 // Run this loop for up to 30 seconds
 for ($i=0;$i<30;$i++) {

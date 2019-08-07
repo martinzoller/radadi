@@ -32,8 +32,8 @@ $clientconfig = array(
       'displaytime'  => 15
                      ),
   'default' => array(
-      'type'         => 'resultlist',
-      'classes'      => array('M10','W10','M12','W12','M14','W14','M16','W16','M18','W18','M20','W20','M21E','W21E','M21B','W21B','M35','W35','M40','W40','M45','W45','M50','W50','M55','W55','M60','W60','M65','W65','M70','M75','OS','OM','OL'),
+      'type'         => 'resultlist_xml',
+      'classes'      => true, //true shows all classes available
       'columns'      => 1,
       'paginate'     => true,
       'displaytime'  => 15

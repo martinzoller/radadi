@@ -86,7 +86,7 @@ if ($xml) {
     $output=array();
     foreach ($csv as $idx=>$line) {
         // Filter CSV by classes
-        if (!in_array($line['Short'], $clientconfig['classes'])) {
+        if ($clientconfig['classes']!==true && !in_array($line['Short'], $clientconfig['classes'])) {
             continue;
         }
 
@@ -98,7 +98,7 @@ if ($xml) {
     $output=array();
     foreach ($csv as $idx=>$line) {
         // Filter CSV by classes
-        if (!in_array($line['Short'], $clientconfig['classes'])) {
+        if ($clientconfig['classes']!==true && !in_array($line['Short'], $clientconfig['classes'])) {
             continue;
         }
         // Results: remove 'did not start'

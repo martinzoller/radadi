@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html><head>
-<meta charset="UTF-8"> 
+<meta charset="UTF-8">
 <script src="js/jquery-2.2.3.min.js"></script>
 <script src="js/radadi.js"></script>
 
@@ -8,30 +8,38 @@
 <style type="text/css" media="screen">
 
 html,body { height:100%;border:0;padding:0;margin:0 } /* height:100% is actually required to set a div height to a percentage */
-body { font-family: sans-serif; background-color:#bbf; overflow:hidden; }
-span.coursedata { font-size:70%;font-style:italic;margin-left:2em; }
+body { font-family: sans-serif; background-color:#E6E6FA; overflow:hidden; }
+span.coursedata { font-size:70%;font-style:italic;margin-left:1em; }
 
 /* START/RESULT LIST */
-#radaheader { height:20%;width:100%;overflow:hidden;margin:0.5em; /*background-color:orange;*/ }
-#radaspace { height:80%;width:100%;overflow:hidden; /*background-color:green;*/ }
-.radacol { position:absolute;top:20%;box-sizing:border-box;padding:1em; /*background-color:blue;*/ }
+#radaheader { height:3em;width:100%;overflow:hidden;margin:0.5em; /*background-color:orange;*/ }
+#radaspace { height:calc(100% - 3em);width:100%;overflow:hidden; /*background-color:green;*/ }
+.radacol { position:absolute;top:3em;box-sizing:border-box;padding:1em; /*background-color:blue;*/ }
 .radapage { height:100%;width:100%; /*background-color:red;*/ }
 table.radalist { background-color:#fff;border-collapse:collapse;table-layout:fixed;width:100%; }
 table.radalist tr.even { background: #ddd; }
 table.radalist tr.odd { background: #fff; }
-table.radalist td { padding:0.2em 0.5em;overflow:hidden;white-space: nowrap; }
+table.radalist td { padding:0.2em 0.5em;overflow:hidden;white-space: nowrap; font-size: 150%;}
 td.col_stno { width:6%; }
-td.col_place { width:6%;text-align:right; }
+td.col_place { width:6%;text-align:right;  font-weight: bold;}
+td.col_place_overall { width:6%;text-align:right; font-style: italic; }
 td.col_nat { width:5%; }
-td.col_name { width:37%; }
+td.col_name { width:37%; font-weight: bold;}
 /* td.col_yob { width:7%; } */
 td.col_club { width:34%; }
 td.col_time { width:18%; }
-h1 { margin:0.1em 0; font-variant:small-caps; }
-h2 { margin-top:0;margin-bottom:0.1em }
+td.col_time_overall { width:18%; font-style: italic;}
+h1 { margin:0.1em 0; display: inline}
+h2 { margin-top:0;margin-bottom:0.1em;font-size:2em; }
 .gap { margin-top:2em }
-.flag { position:relative;height:1em;width:1.5em;border:0.1em solid #ccc; }
-.flag img { height:1em;width:1.5em; }
+.flag { position:relative;height:1em;width:1.5em;border:none }
+.flag img { height:1em;width:1em; border:none; }
+
+#timestamp { background-color: chartreuse}
+.classheader {background-color: dimgrey; color: white; padding-left: 10px}
+.highlight {background-color: yellow}
+
+
 
 /* ERROR POPUP */
 div#errmsg { position:absolute;width:50%;left:25%;top:70%;border:solid 0.1em #e55;
@@ -44,7 +52,7 @@ div#errmsg_text { padding:0.3em; }
 </head>
 
 <body>
-<div id="radaheader"><h1 id="eventname"></h1><h1 id="subtitle"></h1></div>
+<div id="radaheader"><h1><span id="eventname"></span> - <span id="subtitle"></span></h1><b id="timestamp"></b></div>
 <div id="radaspace"></div>
 
 <!-- Error popup -->

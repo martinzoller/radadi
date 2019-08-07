@@ -22,37 +22,37 @@ var displaytime;
 var pagecount = 0;
 
 // Long-polling function
-function longPoll()
-{
-  var queryString = {'timestamp' : timestamp};
+function longPoll() {
+  var queryString = {
+    'timestamp': timestamp
+  };
 
-  $.ajax(
-    {
-      type: 'GET',
-      url: 'http://192.168.1.5/radadi/server.php',
-      async: true, /* If set to non-async, browser shows page as "Loading.."*/
-      cache: false,      
-      data: queryString,
-      dataType: "json",
-      timeout: 40000,
-      success: function(data){
-        timestamp=data.timestamp;
-        newData=data;
-        if(hasData){
-          hasUpdate=true;
-        } else {
-          updateList();
-          hasData = true;          
-        }
-      },
-      error: function(XMLHttpRequest, textStatus, errorThrown){
-        showErr('Error retrieving data', textStatus + " (" + errorThrown + ")");
-      },
-      complete: function(){
-        setTimeout(longPoll, 500); /* Limit the frequency in case we get immediate reply */
+  $.ajax({
+    type: 'GET',
+    url: 'http://' + location.host + '/server.php',
+    async: true,
+    /* If set to non-async, browser shows page as "Loading.."*/
+    cache: false,
+    data: queryString,
+    dataType: "json",
+    timeout: 40000,
+    success: function(data) {
+      timestamp = data.timestamp;
+      newData = data;
+      if (hasData) {
+        hasUpdate = true;
+      } else {
+        updateList();
+        hasData = true;
       }
+    },
+    error: function(XMLHttpRequest, textStatus, errorThrown) {
+      showErr('Error retrieving data', textStatus + " (" + errorThrown + ")");
+    },
+    complete: function() {
+      setTimeout(longPoll, 500); /* Limit the frequency in case we get immediate reply */
     }
-  );
+  });
 }
 
 // Process JSON startlist/results data

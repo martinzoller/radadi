@@ -56,9 +56,9 @@ function longPoll() {
 }
 
 // Process JSON startlist/results data
-function updateList(){
-  
-  var classifier = ['OK','dns','dnf','mp','disq','ot'];
+function updateList() {
+
+  var classifier = ['OK', 'Nicht gestartet', 'Abgebr.', 'Fehlst.', 'Disq.', 'ot'];
   var evcfg = newData['eventconfig'];
   var clcfg = newData['clientconfig'];
   var prevclass = '';

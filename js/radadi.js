@@ -143,7 +143,9 @@ function updateList() {
 
     var listhtml = '';
 
-    if (new Date() - line["FinishTimestamp"] * 1000 < 60 * 5 * 1000) {
+    var fiveMinutes = 60 * 5 * 1000;
+
+    if (line["FinishTimestamp"]*1000 < new Date() && new Date() - line["FinishTimestamp"] * 1000 < fiveMinutes) {
 
       highlightClass = "highlight";
     } else {

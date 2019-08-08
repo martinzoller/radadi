@@ -24,7 +24,7 @@ Support for mobile devices is planned for a future release.
 4. Open `server.php` in a text editor to configure the list of classes that each client should display, and set the event name and current stage.
 5. 
    1. Export a start list by classes from OE2010 into `startlist.csv`, and/or set up an automatic export of a preliminary result (by classes) into `resultlist.csv`, at a regular interval (1-2 minutes is recommended). Make sure to enable the "Excel time format" tick!
-   2. Export result lists as IOF XML v3.0 at a regular intervall to the /xml/ folder in the radadi installation. MeOS can do this in the services menu, see the respective [documentation](http://melin.nu/meos/en/show.php?base=2700&id=2734). Use a wise intervall (1-2 minutes will do). MeOS exports numbered files (0001.xml, 0002.xml, ...), radadi always takes the most recent file for the import.
+   2. Export result lists as IOF XML v3.0 at a regular intervall to the `/xml/` folder in the radadi installation. MeOS can do this in the services menu, see the respective [documentation](http://melin.nu/meos/en/show.php?base=2700&id=2734). Use a wise intervall (1-2 minutes will do). MeOS exports numbered files (`0001.xml`, `0002.xml`, ...), radadi always takes the most recent file for the import.
 6. Point client devices to `http://192.168.1.5/radadi` to display the list. They will automatically paginate the data and update it at the end of each display cycle.
 
 Hopefully there will soon be a GUI to configure client settings.

@@ -61,6 +61,7 @@ function updateList() {
   var classifier = ['OK', 'Nicht gestartet', 'Abgebr.', 'Fehlst.', 'Disq.', 'ot'];
   var evcfg = newData['eventconfig'];
   var clcfg = newData['clientconfig'];
+  var ip = newData['remote_ip'];
   var tmstmp = newData['timestamp'];
   var prevclass = '';
   var evenrow = false;
@@ -134,6 +135,8 @@ function updateList() {
   $('#eventname').text(evcfg['eventname']);
   var subtitle = (clcfg['type'] == 'startlist' ? 'Startliste' : 'Vorl. Ergebnisse') + ' - ' + evcfg['stagename'];
   $('#subtitle').text(subtitle);
+  console.log(ip);
+  $('#ip').text(ip);
   $('#timestamp').text("Aktualisiert vor " + timeSince(tmstmp * 1000));
   $('#radaspace').empty();
   pagecount = 0;
@@ -320,7 +323,7 @@ var timeSince = function(date) {
           intervalType = "Minute";
           intervalTypePl = "Minuten";
           if (interval < 1) {
-            interval = 1
+            interval = 0
           }
         }
       }

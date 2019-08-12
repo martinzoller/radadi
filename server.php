@@ -103,7 +103,8 @@ echo json_encode(
     'list'         =>  $output,
     'timestamp'    =>  $file_tstamp,
     'eventconfig'  =>  $eventconfig,
-    'clientconfig' =>  $clientconfig
+    'clientconfig' =>  $clientconfig,
+    'remote_ip' => $_SERVER['REMOTE_ADDR']
   )
 );
 

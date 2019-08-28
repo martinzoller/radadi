@@ -50,6 +50,7 @@ function longPoll() {
       showErr('Error retrieving data', textStatus + " (" + errorThrown + ")");
     },
     complete: function() {
+      $('#errmsg').hide();
       setTimeout(longPoll, 500); /* Limit the frequency in case we get immediate reply */
     }
   });

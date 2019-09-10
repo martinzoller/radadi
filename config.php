@@ -69,7 +69,23 @@ $oe11_startlist_csv = array(
 
 function get_most_recent_xml()
 {
-    $files = scandir(join(DIRECTORY_SEPARATOR, array(__DIR__, 'xml')), SCANDIR_SORT_DESCENDING);
+
+    $files = scan_dir(join(DIRECTORY_SEPARATOR, array(__DIR__, 'xml')));
     $newest_file = $files[0];
     return join(DIRECTORY_SEPARATOR, array(__DIR__, 'xml', $newest_file));
+}
+
+function scan_dir($dir) {
+    $ignored = array('.', '..', '.svn', '.htaccess');
+
+    $files = array();
+    foreach (scandir($dir) as $file) {
+        if (in_array($file, $ignored)) continue;
+        $files[$file] = filemtime($dir . '/' . $file);
+    }
+
+    arsort($files);
+    $files = array_keys($files);
+
+    return ($files) ? $files : false;
 }

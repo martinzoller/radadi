@@ -1,0 +1,4 @@
+.env
+.docker-compose.swp
+.vscode
+.DS_Store

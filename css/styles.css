@@ -1,0 +1,185 @@
+html,
+body {
+    height: 100%;
+    border: 0;
+    padding: 0;
+    margin: 0
+}
+
+/* height:100% is actually required to set a div height to a percentage */
+body {
+    font-family: sans-serif;
+    background-color: #E6E6FA;
+    overflow: hidden;
+}
+
+span.coursedata {
+    font-size: 70%;
+    font-style: italic;
+    margin-left: 1em;
+}
+
+/* START/RESULT LIST */
+#radaheader {
+    height: 3em;
+    width: 100%;
+    overflow: hidden;
+    margin: 0.5em;
+}
+
+#radaspace {
+    height: calc(100% - 3em);
+    width: 100%;
+    overflow: hidden;
+}
+
+.radacol {
+    position: absolute;
+    top: 3em;
+    box-sizing: border-box;
+    padding: 1em;
+}
+
+.radapage {
+    height: 100%;
+    width: 100%;
+    /*background-color:red;*/
+}
+
+table.radalist {
+    background-color: #fff;
+    border-collapse: collapse;
+    table-layout: fixed;
+    width: 100%;
+}
+
+table.radalist tr.even {
+    background: #ddd;
+}
+
+table.radalist tr.odd {
+    background: #fff;
+}
+
+table.radalist td {
+    padding: 0.2em 0.5em;
+    overflow: hidden;
+    white-space: nowrap;
+    font-size: 170%;
+}
+
+td.col_stno {
+    width: 6%;
+}
+
+td.col_place {
+    width: 6%;
+    text-align: right;
+    font-weight: bold;
+}
+
+td.col_place_overall {
+    width: 6%;
+    text-align: right;
+    font-style: italic;
+}
+
+td.col_nat {
+    width: 1.5em;
+}
+
+td.col_name {
+    width: 37%;
+    font-weight: bold;
+}
+
+td.col_club {
+    width: 34%;
+}
+
+td.col_time {
+    width: 18%;
+    text-align: right
+}
+
+table.radalist td.col_after {
+    width: 10%;
+    font-style: italic;
+    font-size: 130%;
+    text-align: right
+}
+
+td.col_time_overall {
+    width: 18%;
+    font-style: italic;
+    text-align: right
+}
+
+h1 {
+    margin: 0.1em 0;
+    display: inline
+}
+
+h2 {
+    margin-top: 0;
+    margin-bottom: 0.1em;
+    font-size: 2em;
+}
+
+.gap {
+    margin-top: 2em
+}
+
+.flag {
+    position: relative;
+    height: 1em;
+    width: 1.5em;
+    border: none
+}
+
+.flag img {
+    height: 100%;
+    width: 100%;
+    border: none;
+}
+
+#timestamp {
+    background-color: chartreuse;
+    margin-left: 2em
+}
+
+.classheader {
+    background-color: dimgrey;
+    color: white;
+    padding-left: 10px
+}
+
+.highlight {
+    background-color: yellow
+}
+
+#ip {
+    bottom: 0;
+    right: 0;
+    position: absolute;
+    margin: 10px;
+    font-size: 70%
+}
+
+progress {
+    background-color: #f3f3f3;
+    border: 0;
+    width: 100%;
+    height: 8px;
+    top: 0;
+    left: 0;
+    position: absolute;
+}
+
+progress::-webkit-progress-value {
+    background: #f15d07;
+}
+
+progress::-moz-progress-bar {
+    background: #f15d07;
+}

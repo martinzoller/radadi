@@ -29,14 +29,16 @@ function longPoll() {
 
   $.ajax({
     type: 'GET',
-    url: 'http://' + location.host + '/server.php',
+    // url: 'http://' + location.host + '/api/v1/server.php',
+    url: 'http://' + location.host + '/api/v2/show.php',
+
     async: true,
     /* If set to non-async, browser shows page as "Loading.."*/
     cache: false,
     data: queryString,
     dataType: "json",
     timeout: 40000,
-    success: function(data) {
+    success: function (data) {
       timestamp = data.timestamp;
       newData = data;
       if (hasData) {
@@ -46,12 +48,12 @@ function longPoll() {
         hasData = true;
       }
     },
-    error: function(XMLHttpRequest, textStatus, errorThrown) {
+    error: function (XMLHttpRequest, textStatus, errorThrown) {
       showErr('Error retrieving data', textStatus + " (" + errorThrown + ")");
     },
-    complete: function() {
+    complete: function () {
       $('#errmsg').hide();
-      setTimeout(longPoll, 500); /* Limit the frequency in case we get immediate reply */
+      setTimeout(longPoll, 10000); /* Limit the frequency in case we get immediate reply */
     }
   });
 }
@@ -59,7 +61,7 @@ function longPoll() {
 // Process JSON startlist/results data
 function updateList() {
 
-  var classifier = ['OK', 'Nicht gestartet', 'Abgebr.', 'Fehlst.', 'Disq.', 'ot'];
+  var classifier = ['OK', 'Nicht gestartet', 'Abgebr.', 'Fehlst.', 'Disq.', 'ot', 'unknown', 'np'];
   var evcfg = newData['eventconfig'];
   var clcfg = newData['clientconfig'];
   var ip = newData['remote_ip'];
@@ -75,7 +77,12 @@ function updateList() {
   function classheader(classname, dist, controls, newpage) {
     // Continuing previous class?
     var cont = (newpage && pagecount > 1) ? ' <i>(Fortsetzung)</i>' : '';
-    return '<div class="classheader"><h2><span class="classname">' + classname + "</span>" + cont + ' <span class="coursedata">' + dist + ' km</span></h2></div>';
+    var html = '<div class="classheader"><h2><span class="classname">' + classname + "</span>" + cont;
+    if (typeof dist !== 'undefined') {
+      html += ' <span class="coursedata">' + dist + ' km</span>';
+    }
+    html += '</h2></div>';
+    return html;
   }
 
   // Helper for column div ID
@@ -138,18 +145,20 @@ function updateList() {
   $('#subtitle').text(subtitle);
   console.log(ip);
   $('#ip').text(ip);
-  $('#timestamp').text("Aktualisiert vor " + timeSince(tmstmp * 1000));
+
+  $('#timestamp').text(timeSince("Aktualisiert vor ", tmstmp * 1000, ".", "LIVE"));
+
   $('#radaspace').empty();
   pagecount = 0;
   makecol();
 
-  $.each(newData['list'], function(no, line) {
+  $.each(newData['list'], function (no, line) {
 
     var listhtml = '';
 
     var fiveMinutes = 60 * 5 * 1000;
 
-    if (line["FinishTimestamp"]*1000 < new Date() && new Date() - line["FinishTimestamp"] * 1000 < fiveMinutes) {
+    if (line["finish"] * 1000 < new Date() && new Date() - line["finish"] * 1000 < fiveMinutes) {
 
       highlightClass = "highlight";
     } else {
@@ -158,22 +167,22 @@ function updateList() {
 
     // Class heading before previous entry if new page has started
     if (newpage) {
-      $(curcol()).prepend(classheader(line['Short'], line['km'], line['Course controls'], true));
+      $(curcol()).prepend(classheader(line['short'], line['km'], line['controls'], true));
       newpage = false;
     }
 
     // Class heading (we assume the data is sorted by classes)
-    if (line['Short'] != prevclass && prevclass != '') {
+    if (line['short'] != prevclass && prevclass != '') {
       listhtml += '<div class="gap"></div>';
       // Enclosing <div> to move the class heading automatically if the first line is moved to the next column
-      listhtml += '<div>' + classheader(line['Short'], line['km'], line['Course controls'], false);
+      listhtml += '<div>' + classheader(line['short'], line['km'], line['controls'], false);
       evenrow = false;
       has_heading = true;
     } else {
       listhtml += '<div>';
       has_heading = false;
     }
-    prevclass = line['Short'];
+    prevclass = line['short'];
 
     // Differences between start list and results
     var stno_pl;
@@ -185,11 +194,15 @@ function updateList() {
       tsec = time_to_sec(evcfg['zerotime']) + time_to_sec(line['Start']);
       tstr = sec_to_time(tsec);
     } else {
-      stno_pl = '<td class="col_place ' + highlightClass + '">' + line['Place'] + (line['Place'] != '' ? '.' : '');
-      tsec = time_to_sec(line['Time']);
-      tsec_overall = time_to_sec(line['TimeOverall']);
-      tstr = (line['Classifier'] == 0 ? sec_to_time(tsec) : classifier[line['Classifier']]);
-      tstr_overall = (line['ClassifierOverall'] == 0 ? sec_to_time(tsec_overall) : classifier[line['ClassifierOverall']]);
+      stno_pl = '<td class="col_place ' + highlightClass + '">' + line['place'] + (line['place'] != '' ? '.' : '');
+      tstr = (line['classifier'] == 0 ? line['time'] : classifier[line['classifier']]);
+      tstr = (tstr.substring(0, 2) == "0:" ? tstr.substring(2) : tstr);
+
+      tstr_overall = (line['classifierOverall'] == 0 ? line['timeOverall'] : classifier[line['classifierOverall']]);
+      if (tstr_overall) {
+        tstr_overall = (tstr_overall.substring(0, 2) == "0:" ? tstr_overall.substring(2) : tstr_overall);
+      }
+
 
     }
 
@@ -197,16 +210,18 @@ function updateList() {
     // For simplicity, use a complete table tag for each row, that way we can treat them independently
     listhtml += '<table class="radalist"><tr class="' + (evenrow ? 'even' : 'odd') + '">';
     listhtml += stno_pl + '</td><td class="col_nat ' + highlightClass + '"><div class="flag">';
-    if (line['Nat'] != '') {
-      listhtml += '<img src="img/nat/' + line['Nat'] + '.svg" alt="' + line['Nat'] + '" />';
+    if (line['nat'] != '' && typeof line['nat'] !== 'undefined') {
+      listhtml += '<img src="img/nat/' + line['nat'] + '.svg" alt="' + line['nat'] + '" />';
     }
-    listhtml += '</div></td><td class="col_name ' + highlightClass + '">' + line['First name'] + ' ' + line['Surname'] + '</td>';
-    //listhtml += '<td class="col_yob">'+line['YB']+'</td>';
-    listhtml += '<td class="col_club ' + highlightClass + '">' + line['City'] + '</td>';
+    listhtml += '</div></td><td class="col_name ' + highlightClass + '">' + line['name'] + '</td>';
+    //listhtml += '<td class="col_yob">'+line['yb']+'</td>';
+    listhtml += '<td class="col_club ' + highlightClass + '">' + line['team'] + '</td>';
     listhtml += '<td class="col_time ' + highlightClass + '">' + tstr + '</td>';
+    listhtml += '<td class="col_after ' + highlightClass + '">' + line['after'] + '</td>';
+
 
     if (evcfg['stagename'] > 1) {
-      listhtml += '<td class="col_place_overall ' + highlightClass + '">' + line['PlaceOverall'] + (line['PlaceOverall'] != '' ? '.' : '') + '</td>';
+      listhtml += '<td class="col_place_overall ' + highlightClass + '">' + line['placeOverall'] + (line['placeOverall'] != '' ? '.' : '') + '</td>';
 
       listhtml += '<td class="col_time_overall ' + highlightClass + '">' + tstr_overall + '</td>';
     }
@@ -277,9 +292,27 @@ function flipPage() {
 
   //$('#radapage'+curpage).fadeIn(800);
   $('#radapage' + curpage).show();
+  $('#page').text("Seite " + curpage + " von " + pagecount);
   window.setTimeout(flipPage, 1000 * displaytime);
-}
 
+  let progressbar = $('#progressbar');
+  let max = progressbar.attr('max');
+  let time = displaytime * 950 / max;
+  progressbar.val(0);
+  let value = progressbar.val();
+
+  const loading = () => {
+    value += 1;
+    progressbar.val(value);
+
+    $('.progress-value').html(value + '%');
+
+    if (value == max) {
+      clearInterval(animate);
+    }
+  };
+  const animate = setInterval(() => loading(), time);
+};
 
 // Show error pop-up
 function showErr(title, msg) {
@@ -289,7 +322,7 @@ function showErr(title, msg) {
 }
 
 
-var timeSince = function(date) {
+var timeSince = function (prefix, date, postfix = "", fallbackIfZero = "") {
   if (typeof date !== 'object') {
     date = new Date(date);
   }
@@ -335,15 +368,19 @@ var timeSince = function(date) {
     intervalType = intervalTypePl;
   }
 
-  return interval + ' ' + intervalType;
+  if (fallbackIfZero == "" || interval > 1) {
+    return prefix + interval + ' ' + intervalType + postfix;
+  } else {
+    return fallbackIfZero
+  }
 };
 
 
 // initialize jQuery
-$(document).ready(function() {
+$(document).ready(function () {
 
   // Plugin to access an element's HTML including element itself
-  jQuery.fn.outerHTML = function() {
+  jQuery.fn.outerHTML = function () {
     return jQuery('<div />').append(this.eq(0).clone()).html();
   };
 

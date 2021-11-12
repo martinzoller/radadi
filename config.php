@@ -1,4 +1,23 @@
 <?php
+
+  //Localization. NOTE: UTF-8 encoding required for non-latin characters
+  $lang = array();
+  $lang['selectcmp'] = "Select Competition";
+  $lang['place'] = "Place";
+  $lang['team'] = "Team";
+  $lang['name'] = "Name";
+  $lang['after'] = "&nbsp;";
+  $lang['time'] = "Time";
+  $lang['finish'] = "Finish";
+  $lang['tottime'] = "Total Time";
+  $lang['totafter'] = "&nbsp;";
+
+
+
+
+
+
+
 // This will go into DB
 $eventconfig = array(
   'eventname' => 'Hamburg Sprint',
@@ -34,7 +53,7 @@ $clientconfig = array(
   'default' => array(
       'type'         => 'resultlist_xml',
       'classes'      => true, //true shows all classes available
-      'columns'      => 2,
+      'columns'      => 1,
       'paginate'     => true,
       'displaytime'  => 15
                      ),

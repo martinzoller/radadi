@@ -15,7 +15,7 @@ See the README file for more information.
 */
 set_time_limit(60);
 error_reporting(-1);
-require_once "config.php";
+require_once "../../config.php";
 
 
 
@@ -38,7 +38,7 @@ if (isset($clientconfig[$_SERVER['REMOTE_ADDR']])) {
 }
 
 
-$xml=false;
+$xml=true;
 
 if ($clientconfig["type"] == "startlist") {
     $csvconfig = $oe11_startlist_csv;
@@ -164,26 +164,25 @@ function read_iof_xml($config)
 
             if ($classifier != 1) {
                 $results[] = array(
-           "Stno" => (string) $pr->Result->BibNumber,
-           "Chipno" => (string) $pr->Result->ControlCard,
-           "Surname" => (string) $pr->Person->Name->Family,
-           "First name" => (string) $pr->Person->Name->Given,
-           "Nat" => (string) $pr->Organisation->Country['code'],
-           "YB" => "",
-           "S" => "",
-           "Start" => substr($pr->Result->StartTime, 11, 8),
-           "FinishTimestamp" => strtotime(substr($pr->Result->FinishTime, 11, 8)),
-           "Time" =>  sprintf('%01d:%02d:%02d', $hours, $mins, $secs),
-           "TimeOverall" =>  sprintf('%01d:%02d:%02d', $hoursOverall, $minsOverall, $secsOverall),
-           "Classifier" => $classifier,
-           "ClassifierOverall" => $classifierOverall,
-           "City" => (string) $pr->Organisation->Name,
-           "Short" => (string) $empl->Class->Name,
+           "stno" => (string) $pr->Result->BibNumber,
+           "chipno" => (string) $pr->Result->ControlCard,
+           "name" => (string) $pr->Person->Name->Given . " " . (string) $pr->Person->Name->Family,
+           "nat" => (string) $pr->Organisation->Country['code'],
+           "yb" => "",
+           "s" => "",
+           "start" => substr($pr->Result->StartTime, 11, 8),
+           "finish" => strtotime(substr($pr->Result->FinishTime, 11, 8)),
+           "time" =>  sprintf('%01d:%02d:%02d', $hours, $mins, $secs),
+           "timeOverall" =>  sprintf('%01d:%02d:%02d', $hoursOverall, $minsOverall, $secsOverall),
+           "classifier" => $classifier,
+           "classifierOverall" => $classifierOverall,
+           "team" => (string) $pr->Organisation->Name,
+           "short" => (string) $empl->Class->Name,
            "km" => round((float)$empl->Course->Length / 1000.0, 2),
            "m" => (string) $empl->Course->Climb,
-           "Course controls" => "",
-           "Place" => (string) $pr->Result->Position,
-           "PlaceOverall" => (string) $pr->Result->OverallResult->Position
+           "controls" => "",
+           "place" => (string) $pr->Result->Position,
+           "placeOverall" => (string) $pr->Result->OverallResult->Position
          );
             }
         }

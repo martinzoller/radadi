@@ -16,6 +16,8 @@ services:
       MYSQL_PASSWORD: "${DB_PASSWORD}"
       INSTANCE_NAME: "${INSTANCE_NAME}"
       PROJECT_COLOR: "${PROJECT_COLOR}"
+      MEOS_PASSWORD: "${MEOS_PASSWORD}"
+
     container_name: ${DOCKER_IMAGE_PREFIX}php
     restart: always 
   apache:
@@ -42,7 +44,7 @@ services:
     ports:
       - "${EXTERNAL_MYSQL_PORT}:3306"
     volumes:
-            - ./docker/mysql/data/:/var/lib/mysql
+      - ./docker/mysql/data/:/var/lib/mysql
     networks:
       - backend
     environment:
@@ -51,6 +53,7 @@ services:
       MYSQL_DATABASE: "${DB_NAME}"
       MYSQL_USER: "${DB_USERNAME}"
       MYSQL_PASSWORD: "${DB_PASSWORD}"
+      MYSQL_ROOT_HOST: "172.24.0.1"
     container_name: ${DOCKER_IMAGE_PREFIX}mysql
 networks:
   frontend:

@@ -20,18 +20,20 @@ include_once('functions.php');
 session_start();
 header('Content-type: application/json;charset=utf-8');
 
+
 $PHP_SELF = $_SERVER['PHP_SELF'];
+$REMOTE_IP = $_SERVER['REMOTE_ADDR'];
 $link = ConnectToDB();
 
-if (isset($_GET['client'])) {
-  $clientId = (int) $_GET["client"];
-  $sql = "SELECT * FROM clients WHERE id='$clientId'";
-  $resClasses = $link->query($sql);
-  if ($resClasses->num_rows < 1) {
-    $clientId = null;
-    $leg = 1;
-  }
-} 
+$sql = "SELECT cc.* FROM classesClients AS cc, clients AS c WHERE cc.client_id = c.id AND c.ip='$REMOTE_IP'";
+$resClasses = $link->query($sql);
+
+if ($resClasses->num_rows > 0) {
+  $exists_client = true;
+} else {
+  $exists_client = false;
+}
+
 
 
 
@@ -54,8 +56,8 @@ if ($r = $res->fetch_assoc()) {
 }
 
 
-if (isset($clientId)) {
-  $sql = "SELECT cls.id AS classId, cls.name AS name, cc.leg AS leg FROM classesClients AS cc, mopClass AS cls WHERE cc.client_id='$clientId' AND cls.id=cc.class_id";
+if ($exists_client) {
+  $sql = "SELECT cls.id AS classId, cls.name AS name, cc.leg AS leg FROM clients AS c, classesClients AS cc, mopClass AS cls WHERE c.ip='$REMOTE_IP' AND cc.client_id=c.id AND cls.id=cc.class_id";
 } else {
   $sql = "SELECT cls.id AS classId, cls.name AS name FROM mopClass AS cls WHERE cls.cid=$cmpId";
 }
@@ -67,6 +69,7 @@ while ($rClasses = $resClasses->fetch_assoc()) {
 
   $cname = $rClasses['name'];
   $cls = $rClasses['classId'];
+  $leg  = (int) $rClasses['leg'];
 
 
   $sql = "SELECT max(leg) AS nleg FROM mopTeamMember tm, mopTeam t WHERE tm.cid = '$cmpId' AND t.cid = '$cmpId' AND tm.id = t.id AND t.cls = $cls";
@@ -77,20 +80,26 @@ while ($rClasses = $resClasses->fetch_assoc()) {
     $numlegs =  $rTeams['nleg'];
 
 
-  if (is_null($rTeams) || is_null($numlegs)) {
-    //No teams;        
-    $sql = "SELECT cmp.id AS id, cmp.name AS name, org.name AS team,  org.nat AS nat, cmp.rt AS time, cmp.rt + cmp.st AS finish, cmp.stat AS status " .
-      "FROM mopCompetitor cmp LEFT JOIN mopOrganization AS org ON cmp.org = org.id AND cmp.cid = org.cid " .
-      "WHERE cmp.cls = '$cls' " .
-      "AND cmp.cid = '$cmpId' AND cmp.stat>0 ORDER BY cmp.stat, cmp.rt ASC, cmp.id";
-    $rname = "Finish";
-    $resResults = $link->query($sql);
-    $classResult = calculateResult($resResults, $cname);
-    $results = array_merge($results, $classResult);
-  } else {
-    die("only individual results with this endpoint!");
 
+
+  if (isset($_GET['radio'])) {
+    $radio = $_GET['radio'];
+  } else {
+    $radio = 'finish';
   }
+
+  $sql = "SELECT t.id AS id, cmp.name AS name, t.name AS team, cmp.stat AS cmpstatus, " .
+    "t.rt AS time, t.stat AS status, " .
+    "o.nat AS nat " .
+    "FROM mopTeamMember tm, mopCompetitor cmp, mopTeam t, mopOrganization o " .
+    "WHERE t.cls = '$cls' AND t.id = tm.id AND tm.rid = cmp.id AND o.id = t.org " .
+    "AND t.cid = '$cmpId' AND tm.cid = '$cmpId' AND cmp.cid = '$cmpId' AND t.stat>0 " .
+    "AND tm.leg='$leg' AND cmp.stat > 0 AND cmp.stat < 10 ORDER BY t.stat, t.rt ASC, t.id";
+  $rname = "Finish";
+
+  $resResults = $link->query($sql);
+  $classResult = calculateResult($resResults, $cname, $leg);
+  $results = array_merge($results, $classResult);
 }
 
 echo json_encode(

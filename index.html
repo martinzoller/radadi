@@ -4,6 +4,13 @@
     <meta charset="UTF-8">
     <title>radadi - Race Data Display</title>
     <script src="js/jquery-3.6.0.min.js"></script>
+    <script>
+
+        var searchParams = new URLSearchParams(window.location.search);
+        searchParams.has('team');
+        var isTeam = searchParams.get('team');
+        console.log(isTeam);
+    </script>
     <script src="js/radadi.js"></script>
     <link rel="stylesheet" href="css/styles.css">
 </head>

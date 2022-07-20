@@ -8,7 +8,7 @@
 <script src="js/jquery-3.6.0.min.js"></script>
 <script src="js/moment.min.js"></script>
 <script>
-var serverURL='http://192.168.1.5/radadi';
+var serverURL='http://192.168.188.61:8080';
 var pingTimer=0;
 
 function pingServer()
@@ -22,14 +22,19 @@ function pingServer()
       cache: false,      
       timeout: 5000,
       success: function(data){
-        if(data=='pong'){
-          window.location.href=serverURL;
+        console.log(data);
+        if(data.trim() == "team"){
+          window.location.href=serverURL+"/index.html?team=true";
+        } else if(data.trim() == "single"){
+          window.location.href=serverURL+"/index.html?team=false";
         } else {
           pingTimer=setTimeout(pingServer, 3000);
         }
       },
       error: function(xhr, status, error) {
         $('#errors').prepend('<p>'+moment().format('hh:mm:ss')+' '+status+'</p>');
+        console.log("error");
+
         pingTimer=setTimeout(pingServer, 3000);
       },
     }

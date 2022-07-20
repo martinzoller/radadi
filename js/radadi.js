@@ -21,6 +21,16 @@ var newData;
 var displaytime;
 var pagecount = 0;
 
+
+
+var endpoint;
+if (isTeam) {
+  endpoint = "/api/v2/show_teams.php";
+} else {
+  endpoint = "/api/v2/show.php";
+
+}
+
 // Long-polling function
 function longPoll() {
   var queryString = {
@@ -30,7 +40,8 @@ function longPoll() {
   $.ajax({
     type: 'GET',
     // url: 'http://' + location.host + '/api/v1/server.php',
-    url: 'http://' + location.host + '/api/v2/show.php',
+    //url: 'http://' + location.host + '/api/v2/show.php',
+    url: 'http://' + location.host + endpoint,
 
     async: true,
     /* If set to non-async, browser shows page as "Loading.."*/
@@ -198,7 +209,12 @@ function updateList() {
       tstr = (line['classifier'] == 0 ? line['time'] : classifier[line['classifier']]);
       tstr = (tstr.substring(0, 2) == "0:" ? tstr.substring(2) : tstr);
 
-      tstr_overall = (line['classifierOverall'] == 0 ? line['timeOverall'] : classifier[line['classifierOverall']]);
+      if(isTeam) {
+        tstr_overall = (line['classifierOverall'] == 0 ? line['time'] : classifier[line['classifierOverall']]);
+      } else {
+        tstr_overall = (line['classifierOverall'] == 0 ? line['timeOverall'] : classifier[line['classifierOverall']]);
+
+      }
       if (tstr_overall) {
         tstr_overall = (tstr_overall.substring(0, 2) == "0:" ? tstr_overall.substring(2) : tstr_overall);
       }
@@ -206,26 +222,45 @@ function updateList() {
 
     }
 
+     // For simplicity, use a complete table tag for each row, that way we can treat them independently
+     listhtml += '<table class="radalist"><tr class="' + (evenrow ? 'even' : 'odd') + '">';
+     listhtml += stno_pl + '</td><td class="col_nat ' + highlightClass + '"><div class="flag">';
+     if (line['nat'] != '' && typeof line['nat'] !== 'undefined') {
+       listhtml += '<img src="img/nat/' + line['nat'] + '.svg" alt="' + line['nat'] + '" />';
+     }
 
-    // For simplicity, use a complete table tag for each row, that way we can treat them independently
-    listhtml += '<table class="radalist"><tr class="' + (evenrow ? 'even' : 'odd') + '">';
-    listhtml += stno_pl + '</td><td class="col_nat ' + highlightClass + '"><div class="flag">';
-    if (line['nat'] != '' && typeof line['nat'] !== 'undefined') {
-      listhtml += '<img src="img/nat/' + line['nat'] + '.svg" alt="' + line['nat'] + '" />';
+    if (isTeam) {
+     
+      listhtml += '</div></td><td class="col_name ' + highlightClass + '">' + line['team'] + '</td>';
+      //listhtml += '<td class="col_yob">'+line['yb']+'</td>';
+      listhtml += '<td class="col_club ' + highlightClass + '">' + line['name'] + '</td>';
+      listhtml += '<td class="col_time ' + highlightClass + '">' + tstr + '</td>';
+      listhtml += '<td class="col_after ' + highlightClass + '">' + line['after'] + '</td>';
+
+
+      if (evcfg['stagename'] > 1) {
+        listhtml += '<td class="col_place_overall ' + highlightClass + '">' + line['placeOverall'] + (line['placeOverall'] != '' ? '.' : '') + '</td>';
+
+        listhtml += '<td class="col_time_overall ' + highlightClass + '">' + tstr_overall + '</td>';
+      }
+      listhtml += '</tr></table></div>';
+    } else {
+     
+       listhtml += '</div></td><td class="col_name ' + highlightClass + '">' + line['name'] + '</td>';
+       //listhtml += '<td class="col_yob">'+line['yb']+'</td>';
+       listhtml += '<td class="col_club ' + highlightClass + '">' + line['team'] + '</td>';
+       listhtml += '<td class="col_time ' + highlightClass + '">' + tstr + '</td>';
+       listhtml += '<td class="col_after ' + highlightClass + '">' + line['after'] + '</td>';
+ 
+ 
+       if (evcfg['stagename'] > 1) {
+         listhtml += '<td class="col_place_overall ' + highlightClass + '">' + line['placeOverall'] + (line['placeOverall'] != '' ? '.' : '') + '</td>';
+ 
+         listhtml += '<td class="col_time_overall ' + highlightClass + '">' + tstr_overall + '</td>';
+       }
+       listhtml += '</tr></table></div>';
     }
-    listhtml += '</div></td><td class="col_name ' + highlightClass + '">' + line['name'] + '</td>';
-    //listhtml += '<td class="col_yob">'+line['yb']+'</td>';
-    listhtml += '<td class="col_club ' + highlightClass + '">' + line['team'] + '</td>';
-    listhtml += '<td class="col_time ' + highlightClass + '">' + tstr + '</td>';
-    listhtml += '<td class="col_after ' + highlightClass + '">' + line['after'] + '</td>';
 
-
-    if (evcfg['stagename'] > 1) {
-      listhtml += '<td class="col_place_overall ' + highlightClass + '">' + line['placeOverall'] + (line['placeOverall'] != '' ? '.' : '') + '</td>';
-
-      listhtml += '<td class="col_time_overall ' + highlightClass + '">' + tstr_overall + '</td>';
-    }
-    listhtml += '</tr></table></div>';
 
 
     evenrow = !evenrow;

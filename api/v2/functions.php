@@ -87,7 +87,7 @@ function convertStatus($status){
   }
 }
 
-function calculateResult($res, $clsname = "") {
+function calculateResult($res, $clsname = "", $leg = 0) {
   $out = array();  
   
   $place = 0;
@@ -121,6 +121,10 @@ function calculateResult($res, $clsname = "") {
     }
     $row['short'] = $clsname;
 
+    if ($leg > 0) {
+      $row['short'] = $row['short']." -  Strecke $leg";
+    }
+
     if ($r['status'] == 1) {
       $row['place'] = $place;
 
@@ -152,6 +156,9 @@ function calculateResult($res, $clsname = "") {
       $row['time'] = getStatusString($r['status']);
       $row['after'] = "";
     }
+
+        
+    
 
     $row['classifier'] = convertStatus($r['status']);
 
@@ -205,9 +212,9 @@ function selectRadio($link, $cls) {
     }
 
     while ($stmt->fetch()) {
-      print '<a href="'."$PHP_SELF?cls=$cls&radio=$ctrl".'">'.$name."</a><br/>\n";      
+     // print '<a href="'."$PHP_SELF?cls=$cls&radio=$ctrl".'">'.$name."</a><br/>\n";      
     } 
-    print '<a href="'."$PHP_SELF?cls=$cls&radio=finish".'">'.'Finish'."</a><br/>\n";      
+    //print '<a href="'."$PHP_SELF?cls=$cls&radio=finish".'">'.'Finish'."</a><br/>\n";      
   }
   else {
     // Only finish   
@@ -232,14 +239,14 @@ function selectLegRadio($link, $cls, $leg, $ord) {
     $stmt->bind_result($ctrl, $name);
  
     while ($stmt->fetch()) {
-      print '<a href="'."$PHP_SELF?cls=$cls&leg=$leg&ord=$ord&radio=$ctrl".'">'.$name."</a>; \n";      
+      #print '<a href="'."$PHP_SELF?cls=$cls&leg=$leg&ord=$ord&radio=$ctrl".'">'.$name."</a>; \n";      
     } 
   }
   else {
     // Only finish   
-    //$radio = 'finish';
+    $radio = 'finish';
   }
-  print '<a href="'."$PHP_SELF?cls=$cls&leg=$leg&ord=$ord&radio=finish".'">'.'Finish'."</a><br/>\n";
+ # print '<a href="'."$PHP_SELF?cls=$cls&leg=$leg&ord=$ord&radio=finish".'">'.'Finish'."</a><br/>\n";
   return $radio; 
 }
 

@@ -8,7 +8,7 @@
 
         var searchParams = new URLSearchParams(window.location.search);
         searchParams.has('team');
-        var isTeam = searchParams.get('team');
+        var isTeam = searchParams.get('team') == "true";
         console.log(isTeam);
     </script>
     <script src="js/radadi.js"></script>
@@ -18,8 +18,11 @@
 <body>
     <progress id="progressbar" value="0" max="1000"></progress>
     <div id="radaheader">
-        <h1><span id="eventname"></span> - <span id="page"></span></h1><b id="timestamp"></b>
+        <h1><span id="eventname"></span> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span id="page"></span></h1>
+     
     </div>
+    <div id="timestamp"></div>
+    <img id="logo" src="img/Hamburg-OL.svg">
     <div id="radaspace"></div>
     <div id="ip">ip</div>
 </body>

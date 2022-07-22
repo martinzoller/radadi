@@ -1,3 +1,50 @@
+/* source-sans-pro-regular - latin */
+@font-face {
+    font-family: 'Source Sans Pro';
+    font-style: normal;
+    font-weight: 400;
+    src: local(''),
+         url('../fonts/source-sans-pro-v21-latin-regular.woff2') format('woff2'), /* Chrome 26+, Opera 23+, Firefox 39+ */
+         url('../fonts/source-sans-pro-v21-latin-regular.woff') format('woff'); /* Chrome 6+, Firefox 3.6+, IE 9+, Safari 5.1+ */
+  }
+  /* source-sans-pro-italic - latin */
+  @font-face {
+    font-family: 'Source Sans Pro';
+    font-style: italic;
+    font-weight: 400;
+    src: local(''),
+         url('../fonts/source-sans-pro-v21-latin-italic.woff2') format('woff2'), /* Chrome 26+, Opera 23+, Firefox 39+ */
+         url('../fonts/source-sans-pro-v21-latin-italic.woff') format('woff'); /* Chrome 6+, Firefox 3.6+, IE 9+, Safari 5.1+ */
+  }
+  /* source-sans-pro-600 - latin */
+  @font-face {
+    font-family: 'Source Sans Pro';
+    font-style: normal;
+    font-weight: 600;
+    src: local(''),
+         url('../fonts/source-sans-pro-v21-latin-600.woff2') format('woff2'), /* Chrome 26+, Opera 23+, Firefox 39+ */
+         url('../fonts/source-sans-pro-v21-latin-600.woff') format('woff'); /* Chrome 6+, Firefox 3.6+, IE 9+, Safari 5.1+ */
+  }
+  /* source-sans-pro-700 - latin */
+  @font-face {
+    font-family: 'Source Sans Pro';
+    font-style: normal;
+    font-weight: 700;
+    src: local(''),
+         url('../fonts/source-sans-pro-v21-latin-700.woff2') format('woff2'), /* Chrome 26+, Opera 23+, Firefox 39+ */
+         url('../fonts/source-sans-pro-v21-latin-700.woff') format('woff'); /* Chrome 6+, Firefox 3.6+, IE 9+, Safari 5.1+ */
+  }
+  /* source-sans-pro-900 - latin */
+  @font-face {
+    font-family: 'Source Sans Pro';
+    font-style: normal;
+    font-weight: 900;
+    src: local(''),
+         url('../fonts/source-sans-pro-v21-latin-900.woff2') format('woff2'), /* Chrome 26+, Opera 23+, Firefox 39+ */
+         url('../fonts/source-sans-pro-v21-latin-900.woff') format('woff'); /* Chrome 6+, Firefox 3.6+, IE 9+, Safari 5.1+ */
+  }
+
+
 html,
 body {
     height: 100%;
@@ -8,9 +55,15 @@ body {
 
 /* height:100% is actually required to set a div height to a percentage */
 body {
-    font-family: sans-serif;
-    background-color: #E6E6FA;
+    font-family: "Source Sans Pro";
+    background-color: #202b61;
     overflow: hidden;
+}
+
+h1 {
+    color: #fff;
+    font-size:1.5em;
+    font-weight: 700;
 }
 
 span.coursedata {
@@ -21,21 +74,28 @@ span.coursedata {
 
 /* START/RESULT LIST */
 #radaheader {
-    height: 3em;
+    height: 2em;
     width: 100%;
     overflow: hidden;
     margin: 0.5em;
+    font-weight: bold;
+    
+}
+
+.classheader h2 i {
+    font-weight: 400;
+    font-size: 0.7em;
 }
 
 #radaspace {
-    height: calc(100% - 3em);
+    height: calc(100% - 2.4em);
     width: 100%;
     overflow: hidden;
 }
 
 .radacol {
     position: absolute;
-    top: 3em;
+    top: 2em;
     box-sizing: border-box;
     padding: 1em;
 }
@@ -43,7 +103,6 @@ span.coursedata {
 .radapage {
     height: 100%;
     width: 100%;
-    /*background-color:red;*/
 }
 
 table.radalist {
@@ -66,6 +125,7 @@ table.radalist td {
     overflow: hidden;
     white-space: nowrap;
     font-size: 170%;
+    color: #111;
 }
 
 td.col_stno {
@@ -75,7 +135,7 @@ td.col_stno {
 td.col_place {
     width: 6%;
     text-align: right;
-    font-weight: bold;
+    font-weight: 700;
 }
 
 td.col_place_overall {
@@ -90,16 +150,19 @@ td.col_nat {
 
 td.col_name {
     width: 37%;
-    font-weight: bold;
+    font-weight: 700;
 }
 
 td.col_club {
     width: 34%;
+
 }
 
 td.col_time {
     width: 18%;
-    text-align: right
+    text-align: right;
+    font-weight: 700;
+
 }
 
 table.radalist td.col_after {
@@ -145,13 +208,17 @@ h2 {
 
 #timestamp {
     background-color: chartreuse;
-    margin-left: 2em
+    padding:0.1em;
+    font-weight: normal;
+    bottom:0em;
+    left:1em;
+    position: absolute;
+    font-size: 0.7em;
+
 }
 
 .classheader {
-    background-color: dimgrey;
     color: white;
-    padding-left: 10px
 }
 
 .highlight {
@@ -160,10 +227,11 @@ h2 {
 
 #ip {
     bottom: 0;
-    right: 0;
+    right: 1em;
     position: absolute;
-    margin: 10px;
-    font-size: 70%
+    padding:0.1em;
+    font-size: 0.7em;
+    color:#aaa
 }
 
 progress {
@@ -182,4 +250,12 @@ progress::-webkit-progress-value {
 
 progress::-moz-progress-bar {
     background: #f15d07;
+}
+
+img#logo {
+    top:1em;
+    right:1em   ;
+    position: absolute;
+    height:60px;
+    background-color: #fff;
 }

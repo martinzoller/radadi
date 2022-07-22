@@ -157,7 +157,6 @@ function updateList() {
   console.log(ip);
   $('#ip').text(ip);
 
-  $('#timestamp').text(timeSince("Aktualisiert vor ", tmstmp * 1000, ".", "LIVE"));
 
   $('#radaspace').empty();
   pagecount = 0;
@@ -327,7 +326,7 @@ function flipPage() {
 
   //$('#radapage'+curpage).fadeIn(800);
   $('#radapage' + curpage).show();
-  $('#page').text("Seite " + curpage + " von " + pagecount);
+  $('#page').text(curpage + " / " + pagecount);
   window.setTimeout(flipPage, 1000 * displaytime);
 
   let progressbar = $('#progressbar');
@@ -346,6 +345,8 @@ function flipPage() {
       clearInterval(animate);
     }
   };
+  $('#timestamp').text(timeSince("Aktualisiert vor ", timestamp * 1000, ".", "LIVE"));
+
   const animate = setInterval(() => loading(), time);
 };
 
@@ -402,6 +403,7 @@ var timeSince = function (prefix, date, postfix = "", fallbackIfZero = "") {
   if (interval > 1 || interval === 0) {
     intervalType = intervalTypePl;
   }
+  console.log(interval);
 
   if (fallbackIfZero == "" || interval > 1) {
     return prefix + interval + ' ' + intervalType + postfix;

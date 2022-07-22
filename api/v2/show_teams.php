@@ -25,16 +25,6 @@ $PHP_SELF = $_SERVER['PHP_SELF'];
 $REMOTE_IP = $_SERVER['REMOTE_ADDR'];
 $link = ConnectToDB();
 
-$sql = "SELECT cc.* FROM classesClients AS cc, clients AS c WHERE cc.client_id = c.id AND c.ip='$REMOTE_IP'";
-$resClasses = $link->query($sql);
-
-if ($resClasses->num_rows > 0) {
-  $exists_client = true;
-} else {
-  $exists_client = false;
-}
-
-
 
 
 if (isset($_GET['cmp'])) {
@@ -49,17 +39,25 @@ if ($r = $res->fetch_assoc()) {
   $cmpId = $r['cid'];
 
   $eventconfig = array(
-    "eventname" => $r['name'],
-    "stagename" => "1",
-    "zerotime" => "10:00:00"
+    "eventname" => $r['name']
   );
 }
 
 
-if ($exists_client) {
-  $sql = "SELECT cls.id AS classId, cls.name AS name, cc.leg AS leg FROM clients AS c, classesClients AS cc, mopClass AS cls WHERE c.ip='$REMOTE_IP' AND cc.client_id=c.id AND cls.id=cc.class_id";
+$sql = "SELECT cc.* FROM classesClients AS cc, clients AS c WHERE cc.client_id = c.id AND c.ip='$REMOTE_IP' and c.cid=$cmpId";
+$resClasses = $link->query($sql);
+
+if ($resClasses->num_rows > 0) {
+  $exists_client = true;
 } else {
-  $sql = "SELECT cls.id AS classId, cls.name AS name FROM mopClass AS cls WHERE cls.cid=$cmpId";
+  $exists_client = false;
+}
+
+
+if ($exists_client) {
+  $sql = "SELECT cls.id AS classId, cls.name AS name, cc.leg AS leg FROM clients AS c, classesClients AS cc, mopClass AS cls WHERE c.ip='$REMOTE_IP' and c.cid=$cmpId AND cc.client_id=c.id AND cls.id=cc.class_id ORDER BY cls.ord";
+} else {
+  $sql = "SELECT cls.id AS classId, cls.name AS name FROM mopClass AS cls WHERE cls.cid=$cmpId ORDER BY cls.ord";
 }
 $resClasses = $link->query($sql);
 
@@ -108,8 +106,6 @@ echo json_encode(
     'timestamp'    =>  time(),
     'eventconfig'  =>  $eventconfig,
     'clientconfig' =>  array(
-      "type" => "resultlist_xml",
-      "classes" => true,
       "columns" => 1,
       "paginate" => true,
       "displaytime" => 15

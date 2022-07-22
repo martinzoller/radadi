@@ -32,7 +32,7 @@ if (!($cmpId > 0)) {
   returnStatus('BADCMP');
 }
 
-if ($password != $_SERVER["MEOS_PASSWORD"]) {
+if ($password != getenv("MEOS_PASSWORD")) {
   returnStatus('BADPWD');
 }
 

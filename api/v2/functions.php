@@ -17,7 +17,7 @@
   
 
 function ConnectToDB() {
-  $link = @new mysqli($_SERVER["MYSQL_HOST"], $_SERVER["MYSQL_USER"], $_SERVER["MYSQL_PASSWORD"], $_SERVER["MYSQL_DATABASE"]);
+  $link = @new mysqli(getenv("MYSQL_HOST"), getenv("MYSQL_USER"), getenv("MYSQL_PASSWORD"), getenv("MYSQL_DATABASE"));
   
   if (!$link) {
     die('Not connected : ' . $link->connect_error);

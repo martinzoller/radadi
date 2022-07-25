@@ -98,6 +98,7 @@ echo json_encode(
   array(
     'list'         =>  $results,
     'timestamp'    =>  time(),
+    'time'    =>  date('H:i', time()),
     'eventconfig'  =>  $eventconfig,
     'clientconfig' =>  array(
       "columns" => 1,

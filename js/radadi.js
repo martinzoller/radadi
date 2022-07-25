@@ -166,9 +166,7 @@ function updateList() {
 
     var listhtml = '';
 
-    var fiveMinutes = 60 * 5 * 1000;
-
-    if (line["finish"] * 1000 < new Date() && new Date() - line["finish"] * 1000 < fiveMinutes) {
+    if (line['highlight']) {
 
       highlightClass = "highlight";
     } else {

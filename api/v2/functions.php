@@ -139,7 +139,10 @@ function calculateResult($res, $clsname = "", $leg = 0) {
       else
         $row['time'] = "OK"; // No timing
 
-      $row['finish'] = $r['finish'];
+        $t = $r['finish'] / 10;
+
+      $row['finish'] = sprintf("%d:%02d:%02d", $t/3600, ($t/60)%60, $t%60);;
+      $row['highlight'] = $r['finish'] > (secondsSinceMidnightOfDate() - 60 * 5)*10;
 
       if(isset($r['after']) && $r['after']!='') {
         $row['after'] = $r['after'];
@@ -426,6 +429,17 @@ function processTeam($link, $cid, $team) {
   if (isset($team->r)) {
     updateLinkTable($link, "mopTeamMember", $cid, $id, "rid", $team->r);
   }
+}
+
+function secondsSinceMidnightOfDate(): int {
+    $midnightToday = new DateTimeImmutable('today');
+    $now = new DateTimeImmutable('now');
+    $diff = $now->diff($midnightToday);
+
+    return $diff->s // seconds
+        + $diff->i * 60 // minutes to seconds
+        + $diff->h * 60 * 60 // hours to seconds
+    ;
 }
 
 /** MOP return code. */

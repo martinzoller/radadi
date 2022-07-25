@@ -88,11 +88,13 @@ while ($rClasses = $resClasses->fetch_assoc()) {
 
   $sql = "SELECT t.id AS id, cmp.name AS name, t.name AS team, cmp.stat AS cmpstatus, " .
     "t.rt AS time, t.stat AS status, " .
-    "o.nat AS nat " .
+    "o.nat AS nat, " .
+    "cmp.rt + cmp.st AS finish ".
     "FROM mopTeamMember tm, mopCompetitor cmp, mopTeam t, mopOrganization o " .
     "WHERE t.cls = '$cls' AND t.id = tm.id AND tm.rid = cmp.id AND o.id = t.org " .
     "AND t.cid = '$cmpId' AND tm.cid = '$cmpId' AND cmp.cid = '$cmpId' AND t.stat>0 " .
     "AND tm.leg='$leg' AND cmp.stat > 0 AND cmp.stat < 10 ORDER BY t.stat, t.rt ASC, t.id";
+
   $rname = "Finish";
 
   $resResults = $link->query($sql);
@@ -104,6 +106,8 @@ echo json_encode(
   array(
     'list'         =>  $results,
     'timestamp'    =>  time(),
+    'time'    =>  date('H:i:s', time()),
+
     'eventconfig'  =>  $eventconfig,
     'clientconfig' =>  array(
       "columns" => 1,

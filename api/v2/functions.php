@@ -108,7 +108,13 @@ function calculateResult($res, $clsname = "", $leg = 0) {
     $row = array();
 
 
-    $row['name'] = $r['name'];      
+    $name = $r['name']; 
+
+    if(strlen($name)>20) {
+      $split_name = explode(" ", $name, 2);
+      $name = $split_name[0][0] . ". " . $split_name[1];
+    }
+    $row['name'] = $name;      
     if(is_null($r['team'])) {
       $row['team'] = "";
     } else {

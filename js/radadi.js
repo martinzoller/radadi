@@ -328,7 +328,9 @@ function flipPage() {
   $('#radapage' + curpage).show();
   $('#page').text(curpage + " / " + pagecount);
   window.setTimeout(flipPage, 1000 * displaytime);
+  $('#timestamp').text(timeSince("Aktualisiert vor ", timestamp * 1000, ".", "LIVE"));
 
+  /*
   let progressbar = $('#progressbar');
   let max = progressbar.attr('max');
   let time = displaytime * 950 / max;
@@ -345,9 +347,10 @@ function flipPage() {
       clearInterval(animate);
     }
   };
-  $('#timestamp').text(timeSince("Aktualisiert vor ", timestamp * 1000, ".", "LIVE"));
+  
 
   const animate = setInterval(() => loading(), time);
+  */
 };
 
 // Show error pop-up
